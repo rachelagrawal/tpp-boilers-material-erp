@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Items</h2>
+
+<a href="/add-item">Add New Item</a>
+
+<br><br>
+
+<table border="1">
+
+<tr>
+    <th>Code</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>UOM</th>
+</tr>
+
+{% for item in items %}
+<tr>
+    <td>{{ item.item_code }}</td>
+    <td>{{ item.material_name }}</td>
+    <td>{{ item.category }}</td>
+    <td>{{ item.uom }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}

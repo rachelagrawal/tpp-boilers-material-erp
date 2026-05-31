@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Item</h2>
+
+<form method="POST">
+
+    <input type="text" name="item_code" placeholder="Item Code"><br><br>
+
+    <input type="text" name="material_name" placeholder="Material Name"><br><br>
+
+    <input type="text" name="category" placeholder="Category"><br><br>
+
+    <input type="text" name="uom" placeholder="UOM"><br><br>
+
+    <button type="submit">Save</button>
+
+</form>
+
+{% endblock %}
