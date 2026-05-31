@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create Purchase Order</h2>
+
+<form method="POST">
+
+    <label>PO Number</label>
+    <br>
+    <input type="text" name="po_number">
+    <br><br>
+
+    <label>Supplier</label>
+    <br>
+    <select name="supplier_id">
+
+        {% for supplier in suppliers %}
+
+        <option value="{{ supplier.id }}">
+            {{ supplier.supplier_name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>Order Date</label>
+    <br>
+    <input type="date" name="order_date">
+
+    <br><br>
+
+    <button type="submit">
+        Create PO
+    </button>
+
+</form>
+
+{% endblock %}

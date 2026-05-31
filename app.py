@@ -74,6 +74,99 @@ class Item(db.Model):
         db.Float
     )
 
+class Supplier(db.Model):
+    __tablename__ = "suppliers"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    supplier_code = db.Column(
+        db.String(50),
+        unique=True,
+        nullable=False
+    )
+
+    supplier_name = db.Column(
+        db.String(150),
+        nullable=False
+    )
+
+    contact_person = db.Column(
+        db.String(100)
+    )
+
+    phone = db.Column(
+        db.String(20)
+    )
+
+    email = db.Column(
+        db.String(100)
+    )
+
+    gst_number = db.Column(
+        db.String(30)
+    )
+
+    address = db.Column(
+        db.Text
+    )
+
+class PurchaseOrder(db.Model):
+    __tablename__ = "purchase_orders"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    po_number = db.Column(
+        db.String(50),
+        unique=True,
+        nullable=False
+    )
+
+    supplier_id = db.Column(
+        db.Integer,
+        db.ForeignKey("suppliers.id")
+    )
+
+    order_date = db.Column(
+        db.String(20)
+    )
+
+    status = db.Column(
+        db.String(50),
+        default="Pending"
+    )
+
+    total_amount = db.Column(
+        db.Float,
+        default=0
+    )
+
+class PurchaseOrderItem(db.Model):
+    __tablename__ = "purchase_order_items"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    po_id = db.Column(
+        db.Integer,
+        db.ForeignKey("purchase_orders.id")
+    )
+
+    item_id = db.Column(
+        db.Integer,
+        db.ForeignKey("items.id")
+    )
+
+    quantity = db.Column(
+        db.Float
+    )
+
+    rate = db.Column(
+        db.Float
+    )
+
+    line_total = db.Column(
+        db.Float
+    )
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -143,6 +236,82 @@ def items():
     )
 
 
+@app.route(
+    "/add-supplier",
+    methods=["GET", "POST"]
+)
+def add_supplier():
+
+    if request.method == "POST":
+
+        supplier = Supplier(
+            supplier_code=request.form["supplier_code"],
+            supplier_name=request.form["supplier_name"],
+            contact_person=request.form["contact_person"],
+            phone=request.form["phone"],
+            email=request.form["email"],
+            gst_number=request.form["gst_number"],
+            address=request.form["address"]
+        )
+
+        db.session.add(supplier)
+        db.session.commit()
+
+        return redirect("/suppliers")
+
+    return render_template(
+        "add_supplier.html"
+    )
+
+@app.route("/suppliers")
+def suppliers():
+
+    all_suppliers = Supplier.query.all()
+
+    return render_template(
+        "suppliers.html",
+        suppliers=all_suppliers
+    )
+
+@app.route("/add-po", methods=["GET", "POST"])
+def add_po():
+
+    suppliers = Supplier.query.all()
+
+    if request.method == "POST":
+
+        print(request.form)
+
+        po = PurchaseOrder(
+            po_number=request.form["po_number"],
+            supplier_id=request.form["supplier_id"],
+            order_date=request.form["order_date"]
+        )
+
+        db.session.add(po)
+        db.session.commit()
+
+        return redirect("/purchase-orders")
+
+    return render_template(
+        "add_po.html",
+        suppliers=suppliers
+    )
+
+
+
+
+@app.route("/purchase-orders")
+def purchase_orders():
+
+    all_pos = PurchaseOrder.query.all()
+
+    return render_template(
+        "purchase_orders.html",
+        purchase_orders=all_pos
+    )
+
+
 @app.route("/logout")
 def logout():
 
@@ -153,6 +322,47 @@ def logout():
     session.clear()
 
     return redirect("/login")
+
+
+@app.route("/delete-supplier/<int:id>")
+def delete_supplier(id):
+
+    supplier = Supplier.query.get_or_404(id)
+
+    db.session.delete(supplier)
+
+    db.session.commit()
+
+    return redirect("/suppliers")
+
+
+@app.route(
+    "/edit-supplier/<int:id>",
+    methods=["GET", "POST"]
+)
+def edit_supplier(id):
+
+    supplier = Supplier.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        supplier.supplier_code = request.form["supplier_code"]
+        supplier.supplier_name = request.form["supplier_name"]
+        supplier.contact_person = request.form["contact_person"]
+        supplier.phone = request.form["phone"]
+        supplier.email = request.form["email"]
+        supplier.gst_number = request.form["gst_number"]
+        supplier.address = request.form["address"]
+
+        db.session.commit()
+
+        return redirect("/suppliers")
+
+    return render_template(
+        "edit_supplier.html",
+        supplier=supplier
+    )
+
 
 
 if __name__ == "__main__":

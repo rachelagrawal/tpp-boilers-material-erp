@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Purchase Orders</h2>
+
+<a href="/add-po">
+    Create Purchase Order
+</a>
+
+<br><br>
+
+<table class="table table-bordered">
+
+<tr>
+    <th>PO Number</th>
+    <th>Supplier ID</th>
+    <th>Date</th>
+    <th>Status</th>
+</tr>
+
+{% for po in purchase_orders %}
+
+<tr>
+    <td>{{ po.po_number }}</td>
+    <td>{{ po.supplier_id }}</td>
+    <td>{{ po.order_date }}</td>
+    <td>{{ po.status }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}
