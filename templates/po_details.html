@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Purchase Order {{ po.po_number }}</h2>
+
+<p>
+Supplier ID:
+{{ po.supplier.supplier_name }}
+</p>
+
+<p>
+Total:
+₹{{ po.total_amount }}
+</p>
+
+<a href="/po/{{ po.id }}/add-item">
+    Add Item
+</a>
+
+<br><br>
+
+<table class="table table-bordered">
+
+<tr>
+    <th>Item ID</th>
+    <th>Qty</th>
+    <th>Rate</th>
+    <th>Total</th>
+</tr>
+
+{% for item in po_items %}
+
+<tr>
+    <td>{{ item.item.material_name }}</td>
+    <td>{{ item.quantity }}</td>
+    <td>{{ item.rate }}</td>
+    <td>{{ item.line_total }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

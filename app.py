@@ -121,6 +121,11 @@ class PurchaseOrder(db.Model):
         nullable=False
     )
 
+    supplier = db.relationship(
+    "Supplier"
+    )
+
+
     supplier_id = db.Column(
         db.Integer,
         db.ForeignKey("suppliers.id")
@@ -149,6 +154,12 @@ class PurchaseOrderItem(db.Model):
         db.Integer,
         db.ForeignKey("purchase_orders.id")
     )
+
+    
+    item = db.relationship(
+    "Item"
+    )
+
 
     item_id = db.Column(
         db.Integer,
@@ -363,6 +374,68 @@ def edit_supplier(id):
         supplier=supplier
     )
 
+
+@app.route(
+    "/po/<int:po_id>/add-item",
+    methods=["GET", "POST"]
+)
+def add_po_item(po_id):
+
+    items = Item.query.all()
+
+    if request.method == "POST":
+
+        quantity = float(
+            request.form["quantity"]
+        )
+
+        rate = float(
+            request.form["rate"]
+        )
+
+        line_total = quantity * rate
+
+        po_item = PurchaseOrderItem(
+            po_id=po_id,
+            item_id=request.form["item_id"],
+            quantity=quantity,
+            rate=rate,
+            line_total=line_total
+        )
+
+        db.session.add(po_item)
+
+        po = PurchaseOrder.query.get(po_id)
+
+        po.total_amount += line_total
+
+        db.session.commit()
+
+        return redirect(
+            f"/purchase-order/{po_id}"
+        )
+
+    return render_template(
+        "add_po_item.html",
+        items=items
+    )
+
+@app.route("/purchase-order/<int:po_id>")
+def purchase_order_details(po_id):
+
+    po = PurchaseOrder.query.get_or_404(
+        po_id
+    )
+
+    po_items = PurchaseOrderItem.query.filter_by(
+        po_id=po_id
+    ).all()
+
+    return render_template(
+        "po_details.html",
+        po=po,
+        po_items=po_items
+    )
 
 
 if __name__ == "__main__":

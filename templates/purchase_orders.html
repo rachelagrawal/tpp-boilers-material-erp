@@ -17,6 +17,7 @@
     <th>Supplier ID</th>
     <th>Date</th>
     <th>Status</th>
+    <th>View</th>
 </tr>
 
 {% for po in purchase_orders %}
@@ -26,6 +27,11 @@
     <td>{{ po.supplier_id }}</td>
     <td>{{ po.order_date }}</td>
     <td>{{ po.status }}</td>
+    <td>
+    <a href="/purchase-order/{{ po.id }}">
+        Open
+    </a>
+</td>
 </tr>
 
 {% endfor %}

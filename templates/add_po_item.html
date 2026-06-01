@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Item To Purchase Order</h2>
+
+<form method="POST">
+
+    <label>Item</label>
+    <br>
+
+    <select name="item_id">
+
+        {% for item in items %}
+
+        <option value="{{ item.id }}">
+            {{ item.material_name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>Quantity</label>
+    <br>
+    <input type="number" name="quantity">
+
+    <br><br>
+
+    <label>Rate</label>
+    <br>
+    <input type="number" name="rate">
+
+    <br><br>
+
+    <button type="submit">
+        Add Item
+    </button>
+
+</form>
+
+{% endblock %}
