@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add User</h2>
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            name="username"
+            class="form-control"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Password</label>
+
+        <input
+            type="password"
+            name="password"
+            class="form-control"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Role</label>
+
+        <select
+            name="role"
+            class="form-control">
+
+            <option>Admin</option>
+
+            <option>Purchase Manager</option>
+
+            <option>Store Manager</option>
+
+            <option>Viewer</option>
+
+        </select>
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-primary">
+
+        Create User
+
+    </button>
+
+</form>
+
+{% endblock %}

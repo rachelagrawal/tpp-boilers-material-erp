@@ -2,12 +2,529 @@
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-<p>Welcome {{ user }}</p>
+    <div>
 
-<a href="/logout">
-    Logout
-</a>
+        <h2 class="fw-bold mb-1">
 
+            Welcome, {{ user }} 👋
+
+        </h2>
+
+        
+
+    </div>
+
+</div>
+
+
+<div class="row g-3 mb-4">
+
+    <div class="col-xl-2 col-lg-4 col-md-6">
+
+        <div class="card stat-card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <div class="stat-icon bg-primary">
+
+                    📦
+
+                </div>
+
+                <h6>Total Items</h6>
+
+                <h2>{{ total_items }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-lg-4 col-md-6">
+
+        <div class="card stat-card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <div class="stat-icon bg-success">
+
+                    🚚
+
+                </div>
+
+                <h6>Suppliers</h6>
+
+                <h2>{{ total_suppliers }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-lg-4 col-md-6">
+
+        <div class="card stat-card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <div class="stat-icon bg-warning">
+
+                    📄
+
+                </div>
+
+                <h6>Purchase Orders</h6>
+
+                <h2>{{ total_pos }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-lg-4 col-md-6">
+
+        <div class="card stat-card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <div class="stat-icon bg-info">
+
+                    📥
+
+                </div>
+
+                <h6>GRNs</h6>
+
+                <h2>{{ total_grns }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-lg-4 col-md-6">
+
+        <div class="card stat-card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <div class="stat-icon bg-secondary">
+
+                    📤
+
+                </div>
+
+                <h6>Issues</h6>
+
+                <h2>{{ total_stock_issues }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-lg-4 col-md-6">
+
+        <div class="card stat-card border-0 shadow-sm">
+
+            <div class="card-body text-center">
+
+                <div class="stat-icon bg-danger">
+
+                    ⚠
+
+                </div>
+
+                <h6>Low Stock</h6>
+
+                <h2 class="text-danger">
+
+                    {{ low_stock_items|length }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="row g-4 mb-4">
+
+    <!-- Inventory Value -->
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm stat-card h-100">
+
+            <div class="card-body text-center">
+
+                <h5 class="text-muted mb-3">
+                    💰 Inventory Value
+                </h5>
+
+                <div class="inventory-value">
+
+                    ₹{{ "%.2f"|format(inventory_value) }}
+
+                </div>
+
+                <p class="text-success mt-3">
+                    Current Stock Worth
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Purchase Orders -->
+
+    <div class="col-lg-8">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-body">
+
+                <h5 class="mb-4">
+                    📈 Purchase Orders by Month
+                </h5>
+
+                
+                <canvas id="poChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<!-- ================= Low Stock ================= -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            ⚠ Low Stock Alerts
+
+        </h5>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        {% if low_stock_items %}
+
+        <table class="table table-hover align-middle mb-0">
+
+            <thead class="table-light">
+
+                <tr>
+
+                    <th>Material</th>
+
+                    <th>Current Stock</th>
+
+                    <th>Minimum Stock</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for stock in low_stock_items %}
+
+                <tr>
+
+                    <td>
+
+                        <strong>{{ stock.item.material_name }}</strong>
+
+                    </td>
+
+                    <td>
+
+                        {{ stock.current_stock }}
+
+                    </td>
+
+                    <td>
+
+                        {{ stock.item.min_stock }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="badge bg-danger">
+
+                            Low Stock
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="p-4 text-center">
+
+            <h5 class="text-success">
+
+                ✅ No Low Stock Items
+
+            </h5>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<br>
+
+<!-- ================= Recent Activity ================= -->
+
+<div class="row g-4">
+
+    <!-- Purchase Orders -->
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+                    📄 Recent Purchase Orders
+                </h5>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0 align-middle">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>PO No.</th>
+
+                            <th>Supplier</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for po in recent_pos %}
+
+                        <tr>
+
+                            <td>{{ po.po_number }}</td>
+
+                            <td>{{ po.supplier.supplier_name }}</td>
+
+                            <td>
+
+                                {% if po.status=="Approved" %}
+
+                                    <span class="badge bg-success">
+                                        Approved
+                                    </span>
+
+                                {% elif po.status=="Pending" %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        {{ po.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- GRNs -->
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    📥 Recent GRNs
+
+                </h5>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>GRN</th>
+
+                            <th>PO</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for grn in recent_grns %}
+
+                        <tr>
+
+                            <td>{{ grn.grn_number }}</td>
+
+                            <td>{{ grn.purchase_order.po_number }}</td>
+
+                            <td>{{ grn.received_date }}</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- Stock Issues -->
+
+    <div class="col-lg-4">
+
+        <div class="card border-0 shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+
+                    📤 Recent Stock Issues
+
+                </h5>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th>Material</th>
+
+                            <th>Qty</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for issue in recent_issues %}
+
+                        <tr>
+
+                            <td>{{ issue.item.material_name }}</td>
+
+                            <td>{{ issue.quantity }}</td>
+
+                            <td>{{ issue.issue_date }}</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}

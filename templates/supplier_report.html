@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Supplier Report</h2>
+
+<br>
+<a href="/reports/suppliers/excel"
+   class="btn btn-success">
+    Export Excel
+</a>
+
+<a href="/reports/suppliers/pdf"
+   class="btn btn-danger">
+    Export PDF
+</a>
+
+<br><br>
+<table
+border="1"
+style="border-collapse:collapse;width:100%;">
+
+<tr>
+
+<th style="padding:10px;">Supplier Code</th>
+
+<th style="padding:10px;">Supplier Name</th>
+
+<th style="padding:10px;">Contact Person</th>
+
+<th style="padding:10px;">Phone</th>
+
+<th style="padding:10px;">Email</th>
+
+</tr>
+
+{% for supplier in suppliers %}
+
+<tr>
+
+<td style="padding:10px;">
+{{ supplier.supplier_code }}
+</td>
+
+<td style="padding:10px;">
+{{ supplier.supplier_name }}
+</td>
+
+<td style="padding:10px;">
+{{ supplier.contact_person }}
+</td>
+
+<td style="padding:10px;">
+{{ supplier.phone }}
+</td>
+
+<td style="padding:10px;">
+{{ supplier.email }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

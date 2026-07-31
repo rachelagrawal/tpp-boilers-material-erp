@@ -3,7 +3,26 @@
 {% block content %}
 
 <h2>Items</h2>
+<form method="GET" class="mb-3">
 
+    <input
+        type="text"
+        name="search"
+        class="form-control"
+        placeholder="Search by material name..."
+        value="{{ search }}">
+
+    <br>
+
+    <button class="btn btn-primary">
+        Search
+    </button>
+
+    <a href="/items" class="btn btn-secondary">
+        Clear
+    </a>
+
+</form>
 <a href="/add-item">Add New Item</a>
 
 <br><br>
@@ -15,6 +34,7 @@
     <th>Name</th>
     <th>Category</th>
     <th>UOM</th>
+    <th>Actions</th>
 </tr>
 
 {% for item in items %}
@@ -23,6 +43,17 @@
     <td>{{ item.material_name }}</td>
     <td>{{ item.category }}</td>
     <td>{{ item.uom }}</td>
+    <td>
+
+    <a
+        href="/edit-item/{{ item.id }}"
+        class="btn btn-warning btn-sm">
+
+        Edit
+
+    </a>
+
+</td>
 </tr>
 {% endfor %}
 

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>GRN Report</h2>
+
+<br>
+<a href="/reports/grns/excel"
+   class="btn btn-success">
+    Export Excel
+</a>
+
+<a href="/reports/grns/pdf"
+   class="btn btn-danger">
+    Export PDF
+</a>
+
+<br><br>
+<table border="1" style="border-collapse:collapse;width:100%;">
+
+<tr>
+
+    <th style="padding:10px;">
+        GRN Number
+    </th>
+
+    <th style="padding:10px;">
+        PO Number
+    </th>
+
+    <th style="padding:10px;">
+        Supplier
+    </th>
+
+    <th style="padding:10px;">
+        Received Date
+    </th>
+
+</tr>
+
+{% for grn in grns %}
+
+<tr>
+
+    <td style="padding:10px;">
+        {{ grn.grn_number }}
+    </td>
+
+    <td style="padding:10px;">
+        {{ grn.purchase_order.po_number }}
+    </td>
+
+    <td style="padding:10px;">
+        {{ grn.purchase_order.supplier.supplier_name }}
+    </td>
+
+    <td style="padding:10px;">
+        {{ grn.received_date }}
+    </td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

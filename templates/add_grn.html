@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create GRN</h2>
+
+<form method="POST">
+
+    <label>GRN Number</label>
+    <br>
+    <input type="text" name="grn_number">
+
+    <br><br>
+
+    <label>Purchase Order</label>
+    <br>
+
+    <select name="po_id">
+
+        {% for po in purchase_orders %}
+
+        <option value="{{ po.id }}">
+            {{ po.po_number }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>Received Date</label>
+    <br>
+
+    <input type="date" name="received_date">
+
+    <br><br>
+
+    <button type="submit">
+        Create GRN
+    </button>
+
+</form>
+
+{% endblock %}

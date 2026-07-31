@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Stock Issues</h2>
+
+<a href="/issue-stock" class="btn btn-success mb-3">
+    Issue Stock
+</a>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Issue Date</th>
+        <th>Remarks</th>
+    </tr>
+
+    {% for issue in issues %}
+
+    <tr>
+
+        <td>{{ issue.item.material_name }}</td>
+
+        <td>{{ issue.quantity }}</td>
+
+        <td>{{ issue.issue_date }}</td>
+
+        <td>{{ issue.remarks }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

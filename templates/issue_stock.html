@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Issue Stock</h2>
+
+<form method="POST">
+
+    <label>Item</label>
+    <br>
+
+    <select name="item_id">
+
+        {% for stock in inventory %}
+
+        <option value="{{ stock.item.id }}">
+            {{ stock.item.material_name }}
+            (Available: {{ stock.current_stock }})
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>Quantity</label>
+    <br>
+
+    <input type="number"
+           name="quantity">
+
+    <br><br>
+
+    <label>Remarks</label>
+    <br>
+
+    <input type="text"
+           name="remarks">
+
+    <br><br>
+
+    <label>Date</label>
+    <br>
+
+    <input type="date"
+           name="issue_date">
+
+    <br><br>
+
+    <button type="submit">
+        Issue Material
+    </button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Edit User</h2>
+
+<form method="POST">
+
+    <div class="mb-3">
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            name="username"
+            class="form-control"
+            value="{{ user.username }}"
+            required>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Role</label>
+
+        <select
+            name="role"
+            class="form-control">
+
+            <option value="Admin"
+            {% if user.role=="Admin" %}selected{% endif %}>
+            Admin
+            </option>
+
+            <option value="Purchase Manager"
+            {% if user.role=="Purchase Manager" %}selected{% endif %}>
+            Purchase Manager
+            </option>
+
+            <option value="Store Manager"
+            {% if user.role=="Store Manager" %}selected{% endif %}>
+            Store Manager
+            </option>
+
+            <option value="Viewer"
+            {% if user.role=="Viewer" %}selected{% endif %}>
+            Viewer
+            </option>
+
+        </select>
+
+    </div>
+
+    <button
+        class="btn btn-primary"
+        type="submit">
+
+        Save Changes
+
+    </button>
+
+</form>
+
+{% endblock %}

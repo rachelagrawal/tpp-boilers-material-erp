@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Inventory</h2>
+<form method="GET" class="mb-3">
+
+    <input
+        type="text"
+        name="search"
+        class="form-control"
+        placeholder="Search inventory..."
+        value="{{ search }}">
+
+    <br>
+
+    <label>
+
+        <input
+            type="checkbox"
+            name="low_stock"
+            value="1"
+
+            {% if low_stock %}
+            checked
+            {% endif %}>
+
+        Show Low Stock Only
+
+    </label>
+
+    <br><br>
+
+    <button class="btn btn-primary">
+
+        Search
+
+    </button>
+
+    <a href="/inventory"
+       class="btn btn-secondary">
+
+        Clear
+
+    </a>
+
+</form>
+<table class="table table-bordered">
+
+<tr>
+    <th>Item</th>
+    <th>Current Stock</th>
+    <th>Unit Price</th>
+    <th>Total Value</th>
+</tr>
+
+{% for stock in inventory %}
+
+<tr>
+    <td>{{ stock.item.material_name }}</td>
+    <td>{{ stock.current_stock }}</td>
+    <td>₹{{ stock.item.unit_price }}</td>
+    <td>₹{{ "%.2f"|format(
+    stock.current_stock * stock.item.unit_price
+    ) }}
+
+</td>
+
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}
