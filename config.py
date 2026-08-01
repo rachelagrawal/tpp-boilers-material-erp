@@ -1,8 +1,16 @@
-class Config:
-    SECRET_KEY = "tpp_boilers_secret"
+import os
 
-    SQLALCHEMY_DATABASE_URI = (
-        "mysql+pymysql://root@localhost/material_erp"
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
+class Config:
+    SECRET_KEY = os.getenv(
+        "SECRET_KEY",
+        "tpp_boilers_secret"
+    )
+
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "DATABASE_URL",
+        "sqlite:///" + os.path.join(BASE_DIR, "demo.db")
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

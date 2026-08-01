@@ -70,19 +70,21 @@ if __name__ == "__main__":
 
         db.create_all()
 
-        if not User.query.filter_by(
-            username="admin"
-        ).first():
-
-            user = User(
+        if not User.query.filter_by(username="admin").first():
+            admin = User(
                 username="admin",
-                password=generate_password_hash(
-                    "admin123"
-                ),
+                password=generate_password_hash("admin123"),
                 role="Admin"
             )
+            db.session.add(admin)
+        if not User.query.filter_by(username="demo").first():
+            demo = User(
+                username="demo",
+                password=generate_password_hash("demo123"),
+                role="Store Manager"
+            )
+            db.session.add(demo)
 
-            db.session.add(user)
-            db.session.commit()
+        db.session.commit()
 
     app.run(debug=True)
